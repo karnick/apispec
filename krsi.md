@@ -3,7 +3,7 @@ HOST: http://polls.apiblueprint.org/
 
 # KRSI
 
-An application that empowers farmers, by making their finacally smart!!
+An application that empowers farmers, by making their finacally smart!! An application that empowers farmers, by making their finacally smart!! **[KRSI](https://www.krsi.org)** is app that make it possible.
 
 ## Users Collection [/users]
 
