@@ -100,7 +100,7 @@ paths:
       requestBody:
         description: Updated user object
         content:
-          '*/*':
+          application/json:
             schema:
               $ref: '#/components/schemas/User'
         required: true
@@ -149,8 +149,23 @@ paths:
       responses:
         default:
           description: successful operation
-        '400':
+        400:
           description: Bad input request
+    get:
+      tags:
+        - farm
+      summary: List all farms of a user
+      operationId: List of all Farms
+      responses:
+        200:
+          description: A list of all farms held by a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfFarms'
+        400:
+          description: Bad input request
+      
           
   /farm/{id}:
     get:
@@ -226,10 +241,113 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Farm'    
-
+                
+  /expense:
+    post:
+      tags:
+        - expense
+      summary: Create a new Expense
+      description: New expense can only be added by the logged in user.
+      operationId: createExpense
+      requestBody:
+        description: Created Expense object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expense'
+        required: true
+      responses:
+        default:
+          description: successful operation
+        400:
+          description: Bad input request
+    get:
+      tags:
+        - expense
+      summary: List all expenses of a user
+      operationId: ListOfExpenes
+      responses:
+        200:
+          description: A list of all farms held by a user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfExpenses'
+        400:
+          description: Bad input request
+          
+  /expense/{id}:
+    get:
+      tags: 
+        - farm
+      summary: Get the details of a expense farm
+      description: Get the expense details
+      operationId: getExpenseById
+      parameters:
+      - name: id
+        in: path
+        description: ID of expense to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+        404:
+          description: expense not found
+          content: {}
+          
+    put:
+      tags: 
+       - expense
+      summary: Update the details of a given farm
+      description: use this operation to update details of a given farm
+      operationId: updateExpenseById
+      parameters:
+      - name: id
+        in: path
+        description: ID of exprense to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Expense object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expense'
+      responses:
+        200:
+          description: successful operation
+          
+    delete:
+      tags: 
+       - farm
+      summary: Delete the Farm, this will not allowed if it has active produce and expense.
+      description: use this operation to delete a farm
+      operationId: deleteExpensemById
+      parameters:
+      - name: id
+        in: path
+        description: ID of Farm to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          
           
 components:
   schemas:
+    
     Farm:
       type: object
       properties:
@@ -318,7 +436,6 @@ components:
           description: 3 letter ISO Code
           maxLength: 3
 
-
     FarmProduce:
       type: object
       properties:
@@ -360,6 +477,16 @@ components:
       comments:
         type: string
         maxLength: 255
+    
+    ArrayOfExpenses:
+      type: array
+      items:
+        $ref: '#/components/schemas/Expense'
+
+    ArrayOfFarms:
+      type: array
+      items:
+        $ref: '#/components/schemas/Farm'
 
     ApiResponse:
       type: object
